@@ -1,0 +1,196 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	<section class="content-header">
+		<h1>
+			Employées
+			<!-- <small>Control panel</small> -->
+		</h1>
+	</section>
+	<!-- Main content -->
+	<section class="content">
+		<div class="col-md-12">
+			<div class="box box-info">
+				<div class="box-header">
+					<div class="box-tools">
+						<div class="col-sm-6">
+							<button class="btn btn-success btn-lg" data-toggle="modal"
+								data-target="#ModModal">
+								<i class="fa fa-plus"></i> Ajouter
+							</button>
+						</div>
+						<div class="col-sm-6 input-group">
+
+							<input type="text" name="mc" ng-model="mcsh"
+								class="form-control input-sm pull-right" style="width: 150px;"
+								placeholder="Search" />
+							<div class="input-group-btn">
+								<button class="btn btn-sm btn-default" ng-click="sherch()">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body table-responsive">
+					<table id="example1" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Nom Prenom</th>
+								<th>Matriculation</th>
+								<th>Departement</th>
+								<th>Description</th>
+								<th>Action</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="demandeur in demandeurs.content">
+								<td>{{ demandeur.id }}</td>
+								<td><ins><a href="#/delvrdemandeur?id={{demandeur.id}}"
+									style="color: #000">{{ demandeur.nom }}</a></ins></td>
+								<td>{{ demandeur.matr }}</td>
+								<td>{{ demandeur.departement.nom }}</td>
+								<td>{{ demandeur.description | limitTo: 50 }} {{demandeur.description.length < 50 ? '' : '...'}}</td>
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-danger btn-sup" data-toggle="modal"
+											data-target="#SupModal" ng-click="delet(demandeur.id)">
+											<i class="fa fa-trash-o"></i>
+										</button>
+										<button class="btn btn-warning" data-toggle="modal"
+											data-target="#ModModal" ng-click="edit(demandeur.id)">
+											<i class="fa fa-pencil"></i>
+										</button>
+										<a href="#/delvrdemandeur?id={{demandeur.id}}"
+											class="btn btn-primary"><i class="fa fa-ellipsis-h"></i></a>
+
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>#</th>
+								<th>Nom Prenom</th>
+								<th>Matriculation</th>
+								<th>Departement</th>
+								<th>Description</th>
+								<th>Action</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<div class="box-footer clearfix"
+					ng-show="demandeurs.totalPages != 0">
+					<div class="table-pagination">
+						<ul class="pagination">
+							<li ng-class="(demandeurs.number == 0) ? 'disabled' : ''"><a
+								ng-show="(!demandeurs.first)" ng-click="precedent()">Précédent</a>
+								<a ng-show="(demandeurs.first)" href="javascript:void(0);">Précédent</a>
+							</li>
+							<li ng-class="(demandeurs.last) ? 'disabled' : ''"><a
+								ng-show="(!demandeurs.last)" ng-click="suivente()">Suivente</a>
+								<a ng-show="(demandeurs.last)" href="javascript:void(0);">Suivente</a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /.box -->
+		</div>
+		<div id="SupModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer Employée</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Supprimer Employée</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							ng-click="delet(-1)">Oui</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ErrorModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Ereur</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="merror">Error</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="ModModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Edit Demandeur</h4>
+					</div>
+					<form name="prodForm" ng-submit="submit()" method="POST">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									ng-click="rest()" aria-hidden="true">×</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+							<div class="form-group">
+								<label for="label">Nom Prenom</label> <input type="text"
+									class="form-control" name="Nom" id="Nom"
+									placeholder="Nom Prenom" ng-model="nom" required ng-trim="false">
+							</div>
+							<div class="form-group">
+								<label for="Matriculation">Matriculation</label> <input
+									type="text" class="form-control" name="matr" id="matr"
+									placeholder="Matriculation" ng-model="matr">
+							</div>
+							<div class="form-group">
+								<label for="model">Departement</label> <select
+									class="form-control" ng-model="departement_id">
+									<option ng-repeat="departement in departements"
+										value="{{departement.id}}" {{(idm == departement.id) ? 'selected' : ''}}>{{departement.nom}}</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="description">Description</label>
+								<textarea class="form-control" rows="3" name="description"
+									id="description" ng-model="description"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary clearfix">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :
+								'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>

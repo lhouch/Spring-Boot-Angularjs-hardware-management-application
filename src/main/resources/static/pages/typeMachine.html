@@ -1,0 +1,147 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	<section class="content">
+		<div class="col-md-12">
+
+			<div class="box box-info">
+				<div class="box-header">
+					<h3 class="box-title">Liste des Catégories</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-primary btn-lg" data-toggle="modal"
+							data-target="#ModModal" data-target="#AjModal">Ajouter
+							une Catégorie</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<th style="width: 10px">#</th>
+								<th>Label</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="type in types.content">
+								<td>{{type.id}}</td>
+								<td><a href="#/machines?id={{type.id}}" class="aurl">
+										{{type.label}}</a></td>
+								<td>
+									<div class="btn-group">
+										<div class="btn-group">
+											<button class="btn btn-danger btn-sup" data-toggle="modal"
+												data-target="#SupModal" ng-click="delet(type.id)">
+												<i class="fa fa-trash-o"></i>
+											</button>
+											<button class="btn btn-warning" data-toggle="modal"
+												data-target="#ModModal" ng-click="edit(type.id)">
+												<i class="fa fa-pencil"></i>
+											</button>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>#</th>
+								<th>Label</th>
+								<th>Action</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer clearfix" ng-show="types.totalPages != 0">
+					<div class="table-pagination">
+						<ul class="pagination">
+							<li ng-class="(types.number == 0) ? 'disabled' : ''"><a
+								ng-show="(!types.first)" ng-click="precedent()">Précédent</a> <a
+								ng-show="(types.first)" href="javascript:void(0);">Précédent</a>
+							</li>
+							<li ng-class="(types.last) ? 'disabled' : ''"><a
+								ng-show="(!types.last)" ng-click="suivente()">Suivente</a> <a
+								ng-show="(types.last)" href="javascript:void(0);">Suivente</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="SupModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer une Catégorie</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Supprimer une Catégorie</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							ng-click="delet(-1)">Oui</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ErrorModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">ERREUR Constraint</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="merror">Error</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="ModModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Edit Catégorie</h4>
+					</div>
+					<form name="prodForm" ng-submit="submit()" method="POST">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">×</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+							<div class="form-group">
+								<label for="label">Label</label> <input type="text"
+									class="form-control" name="label" id="label"
+									placeholder="Label" ng-model="label">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary clearfix">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :
+								'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>

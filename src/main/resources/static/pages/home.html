@@ -1,0 +1,40 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="">
+				<section class="content">
+					<div class="col-md-6 col-md-offset-3 text-center">
+							<div class="box box-info">
+                                <div class="box-header">
+                                    <i class="fa  fa-bar-chart-o"></i>
+                                    <h3 class="box-title">La consommation de chaque département</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                	 <canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" ></canvas>
+                                </div><!-- /.box-body -->
+                            </div>
+						
+					</div>
+					<div class="col-md-8 col-md-offset-2 text-center">
+							<div class="box box-info">
+                                <div class="box-header">
+                                    <i class="fa fa-tachometer"></i>
+                                    <h3 class="box-title">La disponibilité des produits</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                	 <canvas id="radar" chart-colors="colors" class="chart chart-radar" chart-data="datar" chart-series="series"  chart-options="optionsr" chart-labels="labelsr">
+									</canvas>
+                                </div><!-- /.box-body -->
+                            </div>
+						
+					</div>
+				</section>
+			</div>
+		</div>
+	</section>
+</div>

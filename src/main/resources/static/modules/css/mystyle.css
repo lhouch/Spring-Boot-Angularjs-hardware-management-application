@@ -1,0 +1,29 @@
+.btn-menu-ajut {
+	width: 100%;
+	color: #FFF !important;
+}
+
+.aurl {
+	color: #000000
+}
+
+.dataTables_paginate {
+	
+}
+
+.active{
+	
+	background: #00fffc;
+}
+.line{
+	background: #fff;
+}
+.float-right{
+	float: right;
+}
+
+.mactive {
+	color: black;
+    font-weight: 800;
+}
+

@@ -1,0 +1,66 @@
+.btn-menu-ajut {
+	width: 100%;
+	color: #FFF !important;
+}
+
+.aurl {
+	color: #000000
+}
+.logocac{
+	background: #fff;
+}
+.nonvalide{
+	color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.loading>.overlay,.loading>.loading-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.loading>.overlay {
+	z-index: 1010;
+	background: rgba(255, 255, 255, 0.7);
+}
+
+.loading>.overlay.dark {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.loading>.loading-img {
+	z-index: 1020;
+	background: transparent url('../img/ajax-loader1.gif') 50% 50% no-repeat;
+}
+/* .loader{
+	background-image: url("../img/ajax-loader.gif");
+} */
+
+.shadow{
+	-moz-box-shadow: 1px 1px 5px 2px #656565;
+	-webkit-box-shadow: 1px 1px 5px 2px #656565;
+	-o-box-shadow: 1px 1px 5px 2px #656565;
+	box-shadow: 1px 1px 5px 2px #656565;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=134, Strength=5);
+	    border-radius: 4px;
+    border-radius: 4px;
+    
+}
+.navic{
+	color:#fff;
+	position:absolute;
+	margin-top: 18px;
+	margin-left: 18px;
+}
+
+.shadowsc{
+	-webkit-box-shadow: 0px 0px 32px 2px rgba(12,242,93,1);
+-moz-box-shadow: 0px 0px 32px 2px rgba(12,242,93,1);
+box-shadow: 0px 0px 32px 2px rgba(12,242,93,1);
+    border : none;
+    
+}

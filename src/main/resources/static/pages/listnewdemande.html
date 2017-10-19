@@ -1,0 +1,109 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	
+	<!-- Main content -->
+	<section class="content">
+		<div class="col-md-12">
+			<div class="box">
+				<div class="box-header">
+				
+					<div class="box-tools"><h3>List des demandes</h3></div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body table-responsive">
+					<table id="example1" class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Titre</th>
+								<th>Date</th>
+								<th>Description</th>
+								<th>Nom demandeur</th>
+								<th>Matri</th>
+								<th>Departement</th>
+								<th>Description</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="demande in listdemandenew.content">
+								<td>{{demande.id}}</td>
+								<td><a href="#/demabdenew?id={{demande.id}}" class="aurl">{{demande.titre}}</a></td>
+								<td>{{demande.date | date:'dd-MM-yyyy'}}</td>
+								<td>{{ demande.description | limitTo: 50 }} {{
+									demande.description.length < 50 ? '' : '...'}}</td>
+								<td>{{demande.demandeur.nom}}</td>
+								<td>{{demande.demandeur.matr}}</td>
+								<td>{{demande.demandeur.departement.nom}}</td>
+								<td>{{ demande.demandeur.description | limitTo: 50 }} {{
+									demande.demandeur.description.length < 50 ? '' : '...'}}</td>
+
+								<td>
+									<div class="btn-group">
+										<button class="btn btn-danger btn-sup" data-toggle="modal"
+											data-target="#SupModal" ng-click="delet(demande.id)">
+											<i class="fa fa-trash-o"></i>
+										</button>
+										<a href="#/demabdenew?id={{demande.id}}"
+											class="btn btn-primary"><i class="fa fa-ellipsis-h"></i></a>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>#</th>
+								<th>Titre</th>
+								<th>Date</th>
+								<th>Description</th>
+								<th>Nom demandeur</th>
+								<th>Matri</th>
+								<th>Departement</th>
+								<th>Description</th>
+								<th>Action</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<div class="box-footer clearfix"
+					ng-show="listdemandenew.totalPages != 0">
+					<div class="table-pagination">
+						<ul class="pagination">
+							<li ng-class="(listdemandenew.number == 0) ? 'disabled' : ''">
+								<a ng-show="(!listdemandenew.first)" ng-click="precedent()">Précédent</a>
+								<a ng-show="(listdemandenew.first)" href="javascript:void(0);">Précédent</a>
+							</li>
+							<li ng-class="(listdemandenew.last) ? 'disabled' : ''"><a
+								ng-show="(!listdemandenew.last)" ng-click="suivente()">Suivente</a>
+								<a ng-show="(listdemandenew.last)" href="javascript:void(0);">Suivente</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /.box -->
+		</div>
+
+		<div id="SupModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer une machine</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Supprimer une machine</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							ng-click="delet(-1)">Oui</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="right-side">

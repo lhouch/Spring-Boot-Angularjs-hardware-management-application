@@ -1,0 +1,237 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	<section class="content" ng-controller="userscontroller">
+		<div class="col-md-12">
+
+			<div class="box box-info">
+				<div class="box-header">
+					<h3 class="box-title">Les utilisateurs</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-primary btn-lg" ng-click="rest()"
+							data-toggle="modal" data-target="#AddModal">Ajouter un utilisateur</button>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body no-padding">
+					<table class="table table-striped">
+						<tbody>
+							<tr>
+								<th style="width: 10px">#</th>
+								<th>Nom/prenom</th>
+								<th>E-mail</th>
+								<th>Active</th>
+								<th>Action</th>
+
+							</tr>
+							<tr ng-repeat="user in users.content">
+								<td>{{user.id}}</td>
+								<td><h4>{{user.nom}}</h4></td>
+								<td>{{user.email}}</td>
+								<td>{{(user.active) ? 'Oui' : 'Non'}}</td>
+								<td>
+									<div class="btn-group">
+										<div class="btn-group">
+											<button class="btn btn-danger btn-sup" data-toggle="modal"
+												data-target="#SupModal" ng-click="delet(user.id)">
+												<i class="fa fa-trash-o"></i>
+											</button>
+											<button class="btn btn-warning" data-toggle="modal"
+												data-target="#ModModal" ng-click="edit(user.id)">
+												<i class="fa fa-pencil"></i>
+											</button>
+										</div>
+									</div>
+								</td>
+
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>#</th>
+								<th>Nom/Prenom</th>
+								<th>E-mail</th>
+								<th>Active</th>
+								<th>Action</th>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<!-- /.box-body -->
+
+				<div class="box-footer clearfix" ng-show="users.totalPages != 1">
+					<div class="table-pagination">
+						<ul class="pagination">
+							<li ng-class="(users.number == 0) ? 'disabled' : ''"><a
+								ng-show="(!users.first)" ng-click="precedent()">Précédent</a> <a
+								ng-show="(users.first)" href="javascript:void(0);">Précédent</a>
+							</li>
+							<li ng-class="(users.last) ? 'disabled' : ''"><a
+								ng-show="(!users.last)" ng-click="suivente()">Suivente</a> <a
+								ng-show="(users.last)" href="javascript:void(0);">Suivente</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="SupModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer un utilisateur</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Supprimer un utilisateur</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							ng-click="delet(-1)">Oui</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="ErrorModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">ERREUR de Contrainte</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="merror">Error</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="ModModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Information pour utilisateur</h4>
+					</div>
+					<form name="prodForm" ng-submit="submit()" method="POST">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">x</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+							<div class="form-group">
+								<label for="label">Nom et prenom</label> <input type="text"
+									class="form-control" name="nom" id="nom" placeholder="Nom"
+									ng-model="nom">
+							</div>
+							<div class="form-group">
+								<label for="label">E-mail</label> <input type="text"
+									class="form-control" name="email" id="email"
+									placeholder="email" ng-model="email">
+							</div>
+							<div class="form-group">
+								<label for="label">Active <input type="checkbox"
+									ng-model="active" class="minimal" />
+								</label>
+							</div>
+
+
+						</div>
+						<div class="modal-footer">
+
+							<button type="submit" class="btn btn-primary clearfix">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+
+		<div id="AddModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Ajouter un utilisateur</h4>
+					</div>
+					<form name="userForm">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">x</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+							<div class="form-group">
+								<label for="label">Nom et prenom *</label> <input type="text"
+									class="form-control {{ (!validation && !anom) ? 'nonvalide':'' }} "
+									name="anom" id="anom" placeholder="Nom" ng-model="anom">
+							</div>
+							<div class="form-group">
+								<label for="label">E-mail *</label> <input type="email"
+									class="form-control {{(!validation && !userForm.aemail.$valid) ? 'nonvalide' : ''}} "
+									name="aemail" id="aemail" placeholder="Email" ng-model="aemail"
+									ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+									required>
+							</div>
+							<div class="form-group">
+								<label for="label">Active <input type="checkbox"
+									ng-model="aactive" class="minimal" />
+								</label>
+							</div>
+							<div class="form-group">
+								<label for="label">Mot de passe *</label> <input type="password"
+									class="form-control  {{ (!validation && !apassword) ? 'nonvalide':''}}"
+									name="apassword" id="apassword" placeholder="Mot de pass"
+									ng-model="apassword">
+							</div>
+							<div class="form-group">
+								<label for="label">Confirmer Mot de passe *</label> <input
+									type="password"
+									class="form-control {{ (apassword != acpassword) ? 'nonvalide':''}}"
+									name="cpassword" id="cpassword" placeholder="Mot de pass"
+									ng-model="acpassword">
+							</div>
+							<div class="loading" ng-if="sendData">
+								<div class="overlay"></div>
+								<div class="loading-img"></div>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary clearfix"
+								ng-click="post()">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :
+								'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</section>
+</div>

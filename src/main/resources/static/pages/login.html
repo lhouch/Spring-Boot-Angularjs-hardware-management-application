@@ -1,0 +1,69 @@
+<div ng-controller="loginController">
+	<div class="form-box shadow" id="login-box">
+		<div class="header">Login</div>
+		<div ng-show="error" class="alert alert-danger">{{error}}</div>
+		<form ng-submit="loginb()" name="loginForm" role="form">
+			<div class="body bg-gray">
+				<div class="form-group">
+					<input type="email"
+						class="form-control {{(!loginForm.username.$valid) ? 'nonvalide' : ''}} "
+						name="username" id="username" placeholder="Email"
+						ng-model="username"
+						ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+						required> <span
+						ng-show="form.username.$dirty && form.username.$error.required"
+						class="help-block">Email is required</span>
+				</div>
+				<div class="form-group">
+					<input type="password" name="password" class="form-control"
+						placeholder="Password" ng-model="password" /> <span
+						ng-show="form.password.$dirty && form.password.$error.required"
+						class="help-block">Password is required</span>
+				</div>
+			</div>
+			<div class="footer">
+				<button type="submit" class="btn bg-olive btn-block">Connection</button>
+				<p>
+					<a href="#" data-toggle="modal" data-target="#Modal">Mot de passe oublié</a>
+				</p>
+
+			</div>
+		</form>
+	</div>
+</div>
+<div id="Modal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Mot de passe</h4>
+			</div>
+			<form name="emailForm">
+				<div class="modal-body">
+					<div ng-show="(msg)"
+						class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+						<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+						<button type="button" class="close" data-dismiss="alert"
+							aria-hidden="true">x</button>
+						<b>Alert!</b> {{msg}} {{statusval}}
+					</div>
+					<div class="form-group">
+						<label for="model">E-mail</label> <input type="email"
+							class="form-control {{(!emailForm.aemail.$valid) ? 'nonvalide' : ''}} "
+							name="aemail" id="aemail" placeholder="Email" ng-model="aemail"
+							ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+							required>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn" ng-click="sendEmail()">Envoyer</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+				</div>
+			</form>
+		</div>
+
+	</div>
+</div>

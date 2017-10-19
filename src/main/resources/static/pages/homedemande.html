@@ -1,0 +1,129 @@
+<section>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="logocac">
+				<img alt="CAC" src="../cac/modules/img/logo/logo.jpg"
+					style="margin: auto; width: 50%;" class="img-responsive">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3" ng-show="(!resp)">
+			<div class="callout callout-info">
+				<h4>BIENVENU</h4>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div ng-if="(msg)" class="col-md-6 col-md-offset-3">
+			<div
+				class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+				<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i> <b>Alert!</b>
+				{{msg}} {{statusval}}<br> <a href="index.html"
+					class="btn btn-primary"><span class="fa fa-reply"></span>
+					Nouveau</a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3" ng-show="(!resp)">
+			<div class="box box-primary">
+				<div class="box-header">
+					<h3 class="box-title">Les informations</h3>
+				</div>
+				<form role="form">
+					<div class="box-body">
+						<div class="form-group">
+							<label for="model">Liste Departements</label> <select
+								class="form-control" ng-model="departement_sel"
+								ng-change="change()">
+								<option ng-repeat="departement in departements"
+									value="{{departement.id}}">{{departement.nom}}</option>
+							</select>
+						</div>
+						<div class="form-group" ng-show="(demandeurs)">
+							<label for="model">Liste Demandeurs</label> <select
+								class="form-control" ng-model="demandeur_sel">
+								<option ng-repeat="demandeur in demandeurs"
+									value="{{demandeur.id}}">{{demandeur.nom}} =>Matrc :
+									{{demandeur.matr}}</option>
+							</select>
+						</div>
+						<div class="form-group clearfix" ng-show="(demandeurs)">
+							<button class="btn btn-info" style="float: right;"
+								data-toggle="modal" data-target="#ModModal">Nouveau</button>
+						</div>
+						<div class="form-group" ng-show="(demandeur_sel)">
+							<label for="label">Titre de la demande </label> <input
+								type="text" class="form-control" name="titre" id="titre"
+								placeholder="Titre" ng-model="titre">
+						</div>
+						<div class="form-group" ng-show="(demandeur_sel)">
+							<label for="description">Description</label>
+							<textarea class="form-control" rows="3" name="descd" id="descd"
+								ng-model="descd"></textarea>
+						</div>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer">
+						<button type="button"
+							class="btn btn-success {{(demandeur_sel && titre) ? '' : 'disabled'}}"
+							ng-click="send()">
+							Passe ma demande <span class="fa fa-arrow-right"></span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="ModModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						ng-click="rest()">&times;</button>
+					<h4 class="modal-title">Ajoute Demandeur</h4>
+				</div>
+				<form name="prodForm" ng-submit="submit()" method="POST">
+					<div class="modal-body">
+						<div ng-show="(msg)"
+							class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+							<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+							<button type="button" class="close" data-dismiss="alert"
+								ng-click="rest()" aria-hidden="true">x</button>
+							<b>Alert!</b> {{msg}} {{statusval}}
+						</div>
+						<div class="form-group">
+							<label for="label">Nom Prenom</label> <input type="text"
+								class="form-control" name="Nom" id="Nom"
+								placeholder="Nom Prenom" ng-model="nom" required ng-trim="false">
+						</div>
+						<div class="form-group">
+							<label for="Matriculation">Matriculation</label> <input
+								type="text" class="form-control" name="matr" id="matr"
+								placeholder="Matriculation" ng-model="matr">
+						</div>
+						<div class="form-group">
+							<label for="model">Departement</label> <select
+								class="form-control" ng-model="departement_id">
+								<option ng-repeat="departement in departements"
+									value="{{departement.id}}">{{departement.nom}}</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="description">Description</label>
+							<textarea class="form-control" rows="3" name="description"
+								id="description" ng-model="description"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary clearfix">Enregistrer</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal"
+							ng-click="rest()">{{(msg)? 'OK' : 'Annuler'}}</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

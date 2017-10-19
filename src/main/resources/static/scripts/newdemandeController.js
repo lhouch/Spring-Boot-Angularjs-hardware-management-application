@@ -1,0 +1,1 @@
+cac.controller('newdemandeController',function($scope,$http,$filter,$routeParams,$rootScope){$scope.idd=$routeParams.id;var urlp=$rootScope.domainename;$http.get(urlp+"newdemande/"+$scope.idd).success(function(data){$scope.demande=data;$http.get(urlp+"updatev").success(function(data){$rootScope.listdemandenew=[];});});});

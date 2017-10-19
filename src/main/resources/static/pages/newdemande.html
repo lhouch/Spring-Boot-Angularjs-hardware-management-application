@@ -1,0 +1,53 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-solid">
+					<div class="box-header">
+						<i class="fa fa-text-width"></i>
+						<h3 class="box-title">Déscription de la Demande</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body clearfix">
+						<div class="col-md-12">
+						<div class="callout callout-info">
+							<dl>
+								<dt>Titre de la demande</dt>
+								<dd>{{demande.titre}}</dd>
+								<dt>Date</dt>
+								<dd>{{demande.date}}</dd>
+								<dt>Description de la demande</dt>
+								<dd>{{demande.description}}</dd>
+							</dl>
+							</div>
+							<div class="callout callout-info">
+								<dl>
+									<dt>Nom demandeur</dt>
+									<dd>{{demande.demandeur.nom}}</dd>
+									<dt>Matricul</dt>
+									<dd>{{demande.demandeur.matr}}</dd>
+									<dt>Departement</dt>
+									<dd>{{demande.demandeur.departement.nom}}</dd>
+									<dt>Description demandeur</dt>
+									<dd>{{demande.demandeur.description}}</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer">
+
+						<a class="btn btn-success"
+							href="#/delvrdemandeur?id={{demande.demandeur.id}}">Délivré
+							une machine</a>
+					</div>
+				</div>
+				<!-- /.box -->
+			</div>
+		</div>
+	</section>
+
+</div>

@@ -1,0 +1,37 @@
+<div class="wrapper row-offcanvas row-offcanvas-left">
+	<aside class="left-side sidebar-offcanvas {{(nav) ? 'collapse-left' : '';}} ">
+		<!-- sidebar: style can be found in sidebar.less -->
+		<section class="sidebar">
+			<!-- sidebar menu: : style can be found in sidebar.less -->
+			<ul class="sidebar-menu">
+				<li class="active"><a href="#/"> <i class="fa fa-dashboard"></i>
+						<span>Accueil</span>
+				</a></li>
+				<li class="treeview"><a href="#"> <i class="fa fa-hdd-o"></i>
+						<span>Matériels & Logiciels</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+					<ul class="treeview-menu">
+						<li ng-repeat="type in listtypes.content"><a
+							href="#/machines?id={{type.id}}"><i
+								class="fa fa-angle-double-right"></i> {{type.label}}</a></li>
+						<a href="#/type" class="btn btn-primary btn-menu-ajut"><i class="fa fa-edit"></i> </a>
+					</ul></li>
+				<li class="treeview"><a href="#"> <i class="fa fa-group"></i>
+						<span>Les demandeurs</span> <i class="fa fa-angle-left pull-right"></i>
+				</a>
+					<ul class="treeview-menu">
+						<li><a href="#/departements"><i
+								class="fa fa-angle-double-right"></i> Departements</a></li>
+						<li><a href="#/demandeurs"><i
+								class="fa fa-angle-double-right"></i> Employées</a></li>
+					</ul></li>
+				<li class=""><a href="#/users"> <i class="fa fa-eye"></i> <span>Users</span>
+				</a></li>
+			</ul>
+		</section>
+		<script type="text/javascript">
+			$(".sidebar .treeview").tree();
+		</script>
+		
+	</aside>
+</div>

@@ -1,0 +1,268 @@
+<div ng-include="'pages/header.html'"></div>
+<div ng-include="'pages/side.html'"></div>
+<div class="right-side {{(nav) ? 'strech' : '';}}">
+	
+	<!-- Main content -->
+	<section class="content">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box box-solid">
+					<div class="box-header">
+						<i class="fa fa-text-width"></i>
+						<h3 class="box-title">Déscription Demandeur</h3>
+					</div>
+					<!-- /.box-header -->
+					<div class="box-body">
+						<dl class="dl-horizontal">
+							<dt>Nom</dt>
+							<dd>{{demandeur.nom}}</dd>
+							<dt>Matrc</dt>
+							<dd>{{demandeur.matr}}</dd>
+							<dt>Departemente</dt>
+							<dd>{{demandeur.departement.nom}}</dd>
+							<dt>Description</dt>
+							<dd>{{demandeur.description}}</dd>
+						</dl>
+					</div>
+					<!-- /.box-body -->
+					<div class="box-footer">
+						<button class="btn btn-success" data-toggle="modal"
+							data-target="#selectModal" ng-click="rest()">Délivré une
+							produit existe</button>
+						<button class="btn btn-primary" data-toggle="modal"
+							data-target="#ModModal" ng-click="rest()">Nouveau
+							produit</button>
+					</div>
+				</div>
+				<!-- /.box -->
+				<div class="box-body table-responsive no-padding"
+					ng-show="(demandes)">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th>Label</th>
+								<th>Marque</th>
+								<th>model</th>
+								<th>garantie</th>
+								<th>numeros</th>
+								<th>Date</th>
+								<th>Description</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="demande in demandes"
+								style="background-color: {{(demande.delvre)? '#00fffc': '#fff'}}">
+								<td>{{demande.prod.label}}</td>
+								<td>{{demande.prod.marque}}</td>
+								<td>{{demande.prod.model}}</td>
+								<td>{{demande.prod.garantie | date:'dd-MM-yyyy'}}</td>
+								<td>{{demande.prod.numeros}}</td>
+								<td>{{demande.date | date:'dd-MM-yyyy'}}</td>
+								<td>{{demande.prod.description | limitTo: 30 }} {{demande.prod.description.length < 30 ? '' : '...'}}</td>
+								<td>
+									<button class="btn btn-danger btn-sup" data-toggle="modal"
+										data-target="#SupModal" ng-click="delet(demande.id)">
+										<i class="fa fa-trash-o"></i>
+									</button>
+									<button ng-if="(demande.delvre)" class="btn btn-primary"
+										data-toggle="modal" data-target="#libreModal"
+										ng-click="libre(demande.id)"><i class="fa fa-chain-broken"></i></button>
+										
+										<button ng-if="(demande.delvre)" class="btn btn-success"
+										ng-click="print(demande.id)"><i class="fa fa-print"></i></button>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="selectModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Rechircher produit</h4>
+					</div>
+					<form name="demForm" ng-submit="submit()" method="POST">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									ng-click="rest()" aria-hidden="true">×</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+
+							<div class="form-group">
+								<label for="model">Type Machine</label> <select
+									class="form-control" ng-model="type_sel" ng-change="change()">
+
+									<option ng-repeat="type in types" value="{{type.id}}">{{type.label}}</option>
+								</select>
+							</div>
+							<div class="form-group" ng-show="(type_sel)">
+								<label for="model">Machine</label> <select class="form-control"
+									ng-model="produit_sel" ng-change="nums()">
+									<option ng-repeat="produit in produits.content"
+										value="{{produit.id}}">{{produit.label}}</option>
+								</select>
+							</div>
+							<div ng-if="(demandeurde)"
+								class="alert alert-danger alert-dismissable">
+								<i class="fa fa-warning"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									aria-hidden="true">×</button>
+								<b>Alert!</b> La machine délvre à {{demandeurde.demandeur.nom}}
+							</div>
+							<div class="form-group" ng-show="(produit_sel)">
+								<label for="quantite">Numéro série</label> <input type="text"
+									class="form-control" name="numeros" id="numeros"
+									placeholder="Numéro série" ng-model="numeros">
+							</div>
+							<div class="form-group" ng-show="(produit_sel)">
+								<label for="prix">La date</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									<input type="text" class="form-control" id="datemask"
+										data-inputmask="'alias': 'dd/mm/yyyy'" data-mask=""
+										ng-model="dated">
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary clearfix">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :
+								'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="SupModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header bg-red">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Supprimer une demande</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Supprimer une demande</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-dismiss="modal"
+							ng-click="delet(-1)">Oui</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="libreModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Libre produit</h4>
+					</div>
+					<div class="modal-body">
+						<h2 id="mssg" ng-bind="msgsup">Libre produit</h2>
+						<input type="hidden" name="id" id="idsup" />
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							ng-click="libre(-1)">Oui</button>
+						<button type="button" class="btn" data-dismiss="modal">Annuler</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="ModModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="rest()">&times;</button>
+						<h4 class="modal-title">Edit produit</h4>
+					</div>
+					<form name="prodForm" ng-submit="submit()" method="POST">
+						<div class="modal-body">
+							<div ng-show="(msg)"
+								class="alert  {{ (resp)? 'alert-success' : 'alert-warning' }} alert-dismissable">
+								<i class="fa {{ (resp)? 'fa-check' : 'fa-warning' }}"></i>
+								<button type="button" class="close" data-dismiss="alert"
+									ng-click="rest()" aria-hidden="true">×</button>
+								<b>Alert!</b> {{msg}} {{statusval}}
+							</div>
+							<div class="form-group">
+								<label for="model">Type Machine</label> <select
+									class="form-control" ng-model="type_sel">
+									<option ng-repeat="type in types" value="{{type.id}}">{{type.label}}</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="label">Label</label> <input type="text"
+									class="form-control" name="label" id="label"
+									placeholder="Label" ng-model="label" required ng-trim="false">
+							</div>
+							<div class="form-group">
+								<label for="marque">Marque</label> <input type="text"
+									class="form-control" name="marque" id="marque"
+									placeholder="Marque" ng-model="marque">
+							</div>
+							<div class="form-group">
+								<label for="model">Model</label> <input type="text"
+									class="form-control" name="model" id="model"
+									placeholder="Model" ng-model="model">
+							</div>
+							<div class="form-group">
+								<label for="prix">Prix</label> <input type="text"
+									class="form-control" id="prix" placeholder="Prix"
+									ng-model="prix">
+							</div>
+							<div class="form-group">
+								<label for="quantite">Numéro série</label> <input type="text"
+									class="form-control" name="numeros" id="numeros"
+									placeholder="Numéro série" ng-model="numeros">
+							</div>
+							<div class="form-group">
+								<label for="prix">La durée de garantie</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-calendar"></i>
+									</div>
+									 <input type="text"
+										class="form-control {{(!prodForm.garantie.$valid && garantie !='') ? 'nonvalide' : ''}} "
+										placeholder="jj/MM/aaaa" name="garantie" ng-model="garantie"
+										ng-pattern="/^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]{4}$/"
+										required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="description">Description</label>
+								<textarea class="form-control" rows="3" name="description"
+									id="description" ng-model="description"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" ng-click="send()"
+								class="btn btn-primary clearfix">Enregistrer</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal" ng-click="rest()">{{(msg)? 'OK' :
+								'Annuler'}}</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
